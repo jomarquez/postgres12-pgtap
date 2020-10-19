@@ -1,0 +1,18 @@
+services:
+  - jomarquez/postgres12-pgtap
+
+variables:
+  POSTGRES_DB: $POSTGRES_DB
+  POSTGRES_USER: $POSTGRES_USER
+  POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+
+stages:
+  - test
+
+pg-unit-tests:
+  image: jomarquez/postgres12-pgtap
+  before_script:
+    - export PGPASSWORD=$POSTGRES_PASSWORD
+  script:
+    # - run sql migrations (optional)
+    - pg_prove -h "jomarquez-postgres12-pgtap" -U "$POSTGRES_USER" -d "$POSTGRES_DB" postgres/pgtap/test.sql
